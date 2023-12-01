@@ -24,6 +24,8 @@ numbers = {
     "nine": 9,
 }
 
+pattern = re.compile("(?=(" + "|".join(numbers.keys()) + "|[0-9]))")
+
 
 def to_number(value):
     try:
@@ -33,7 +35,6 @@ def to_number(value):
 
 
 def get_number(line):
-    pattern = re.compile("(?=(" + "|".join(numbers.keys()) + "|[0-9]))")
     values = pattern.findall(line)
     return 10 * to_number(values[0]) + to_number(values[-1])
 
