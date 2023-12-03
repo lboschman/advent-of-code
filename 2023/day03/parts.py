@@ -14,6 +14,10 @@ class Point:
         else:
             return False
 
+    def find_neighbouring_parts(self, part_list):
+        neighbours = [part for part in part_list if part.is_neighbour(self)]
+        return neighbours
+
 
 class PartNumber(Point):
     def __init__(self, x, y, x_max, value):
@@ -79,3 +83,7 @@ for number in numbers:
             value += number.value
             break
 print(value)
+
+gears: List[PartNumber] = [point for point in points if point.value=="*"]
+gear_parts = [gear.find_neighbouring_parts(numbers) for gear in gears if len(gear.find_neighbouring_parts(numbers))==2]
+print(sum([part[0].value * part[1].value for part in gear_parts]))
