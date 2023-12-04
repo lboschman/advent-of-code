@@ -21,9 +21,12 @@ class ScratchCard:
     def get_score(self):
         count_winners = len([num for num in self.numbers if num in self.winners])
         if count_winners > 0:
-            return 2**(count_winners-1)
+            return 2 ** (count_winners - 1)
         else:
             return 0
+
+    def winner_count(self):
+        return len([num for num in self.numbers if num in self.winners])
 
 
 with open("input.txt", "r") as file:
@@ -36,3 +39,20 @@ cards = [ScratchCard(line) for line in lines]
 scores = [card.get_score() for card in cards]
 
 print(sum(scores))
+
+cd = {card.id: [card, 1] for card in cards}
+
+
+def process_card(i, card_dict):
+    card, number = card_dict[i]
+    winning_numbers = card.winner_count()
+    for _ in range(number):
+        for j in range(1, winning_numbers + 1):
+            card_dict[i + j][1] += 1
+    return card_dict
+
+
+for i in list(cd.keys()):
+    cd = process_card(i, cd)
+
+print(sum([item[1] for item in cd.values()]))
